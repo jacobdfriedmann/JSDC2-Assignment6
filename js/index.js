@@ -6,12 +6,12 @@ var Model = {
       text: 'hello',
       status: 'todo',
       id: '1234'
-    },
+    }, // added comma
     {
       text: 'world',
       status: 'doing',
       id: '4321'
-    }
+    },
     {
       text: '!!',
       status: 'done',
@@ -32,7 +32,7 @@ var Model = {
   },
 
   getDones: function() {
-    return this.tasks.filter(function() {
+    return this.tasks.filter(function(task) { // added "task" to function
       return task.status === 'done';
     });
   },
@@ -55,7 +55,7 @@ var Model = {
 
   deleteTask: function(id) {
     this.tasks = this.tasks.filter(function(task) {
-      return id === task.id;
+      return id !== task.id; // wanted to do opposit of deleting everyting but the one i wanted
     });
   },
 
@@ -99,12 +99,12 @@ var Controller = {
     $('#load').on('click', this.handleLoad);
     $('#khanban').on('click', '.delete', this.handleDelete);
     $('#khanban').on('dragenter dragover', '.column', this.handleDrag);
-    document.querySelector('#khanban').addEventListener('dragstart', this.handleDragStart);
-    document.querySelector('#kahnban').addEventListener('drop', this.handleDrop);
+    document.querySelector('#khanban').addEventListener('dragstart', this.handleDragStart);  // fixed spelling mistake
+    document.querySelector('#khanban').addEventListener('drop', this.handleDrop);
   },
 
   handleSubmit: function(event) {
-    event.preventDefault;
+    event.preventDefault(); // added () to function
     var value = $('#todoInput').val();
     Model.addTask(value);
     View.renderBoard();
@@ -127,7 +127,7 @@ var Controller = {
 
   handleDrop: function(event) {
     var column = $(event.target).closest('.column');
-    if (column.length() > 0) {
+    if (column.length > 0) { // removed () to column.legnth, not function
       var id = event.dataTransfer.getData('text');
       Model.moveTask(id, column.attr('id'));
       View.renderBoard();
@@ -138,9 +138,9 @@ var Controller = {
     $.ajax({
       type: 'GET',
       url: 'http:/jacobfriedmann.com:3000/todos?num=1',
-      success: function(data) {
-        data.tasks.forEach(function(task) {
-          Model.addTask(task);
+      success: function(tasks) { // changed to tasks (array) from data
+        tasks.forEach(function(task) { // removed data. kept as tasks the array
+          Model.addTask(task.text);  // added .text what it's getting from the object
         });
         View.renderBoard();
       }
