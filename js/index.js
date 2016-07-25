@@ -56,7 +56,8 @@ var Model = {
 
   deleteTask: function(id) {
     this.tasks = this.tasks.filter(function(task) {
-      return id === task.id;
+      //negate the true's and falses to fix the bug with deleting
+      return !(id === task.id);
     });
   },
 
@@ -121,6 +122,7 @@ var Controller = {
 
   handleDelete: function() {
     var id = $(this).parent().attr('id');
+    // var id = $(this).attr('id');
     Model.deleteTask(id);
     View.renderBoard();
   },
