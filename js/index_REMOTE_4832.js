@@ -150,11 +150,6 @@ var Controller = {
       type: 'GET',
       url: 'http:/jacobfriedmann.com:3000/todos?num=1',
       success: function(data) {
-<<<<<<< HEAD
-        data.tasks.forEach(function(task) {
-          Model.addTask(task);
-        });
-=======
         // console.log(data);
         //console.log(data.tasks);
         //console.log(data[tasks]);
@@ -168,7 +163,6 @@ var Controller = {
         //   // console.log(key);
         //   Model.addTask(data[key]["text"]);
         // };
->>>>>>> 95bc55ea1b3d74d9d1c41358c1506322bdd36d88
         View.renderBoard();
       }
     });

@@ -46,7 +46,6 @@ var Model = {
   },
 
   addTask: function(text) {
-    event.stopPropagation();
     this.tasks.push({
       text: text,
       status: 'todo',
@@ -56,8 +55,7 @@ var Model = {
 
   deleteTask: function(id) {
     this.tasks = this.tasks.filter(function(task) {
-      //negate the true's and falses to fix the bug with deleting
-      return !(id === task.id);
+      return id === task.id;
     });
   },
 
@@ -86,10 +84,8 @@ var View = {
   },
 
   renderBoard: function() {
-    
     $('#todoInput').val('');
     $('#khanban').html(this.template(Model.getAllTasks()));
-
   }
 }
 
@@ -100,7 +96,6 @@ var Controller = {
     View.renderBoard();
 
     $('#addTaskForm').on('submit', this.handleSubmit);
-    // $('#submit').on('click', this.handleSubmit);
     $('#load').on('click', this.handleLoad);
     $('#khanban').on('click', '.delete', this.handleDelete);
     $('#khanban').on('dragenter dragover', '.column', this.handleDrag);
@@ -109,20 +104,14 @@ var Controller = {
   },
 
   handleSubmit: function(event) {
-    // event.stopPropagation();
-    event.preventDefault();
+    event.preventDefault;
     var value = $('#todoInput').val();
-    // console.log(value);
     Model.addTask(value);
-    // console.log(Model)
     View.renderBoard();
-
   },
-
 
   handleDelete: function() {
     var id = $(this).parent().attr('id');
-    // var id = $(this).attr('id');
     Model.deleteTask(id);
     View.renderBoard();
   },
@@ -150,25 +139,9 @@ var Controller = {
       type: 'GET',
       url: 'http:/jacobfriedmann.com:3000/todos?num=1',
       success: function(data) {
-<<<<<<< HEAD
         data.tasks.forEach(function(task) {
           Model.addTask(task);
         });
-=======
-        // console.log(data);
-        //console.log(data.tasks);
-        //console.log(data[tasks]);
-        // data.tasks.forEach(function(task) {
-        //   Model.addTask(task);
-        // });
-        Model.addTask(data[0]["text"]);
-        // for(key in data){
-        //   var value = data[key]["text"];
-        //   // console.log(value);
-        //   // console.log(key);
-        //   Model.addTask(data[key]["text"]);
-        // };
->>>>>>> 95bc55ea1b3d74d9d1c41358c1506322bdd36d88
         View.renderBoard();
       }
     });
