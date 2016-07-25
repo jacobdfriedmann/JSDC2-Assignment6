@@ -150,25 +150,24 @@ var Controller = {
       type: 'GET',
       url: 'http:/jacobfriedmann.com:3000/todos?num=1',
       success: function(data) {
-<<<<<<< HEAD
-        data.tasks.forEach(function(task) {
-          Model.addTask(task);
-        });
-=======
+        // data.tasks.forEach(function(task) {
+        //   Model.addTask(task);
+
+        // });
+        Model.addTask(data[0]["text"]);
         // console.log(data);
         //console.log(data.tasks);
         //console.log(data[tasks]);
         // data.tasks.forEach(function(task) {
         //   Model.addTask(task);
         // });
-        Model.addTask(data[0]["text"]);
+        
         // for(key in data){
         //   var value = data[key]["text"];
         //   // console.log(value);
         //   // console.log(key);
         //   Model.addTask(data[key]["text"]);
         // };
->>>>>>> 95bc55ea1b3d74d9d1c41358c1506322bdd36d88
         View.renderBoard();
       }
     });
