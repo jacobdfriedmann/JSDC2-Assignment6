@@ -11,7 +11,7 @@ var Model = {
       text: 'world',
       status: 'doing',
       id: '4321'
-    }
+    },
     {
       text: '!!',
       status: 'done',
@@ -22,6 +22,7 @@ var Model = {
   getTodos: function() {
     return this.tasks.filter(function(task) {
       return task.status === 'todo';
+
     });
   },
 
@@ -73,6 +74,8 @@ var Model = {
   }
 };
 
+//end objects
+  console.log('it works');
 // View
 
 var View = {
@@ -81,10 +84,13 @@ var View = {
   init: function() {
     var source = $('#board-template').html();
     this.template = Handlebars.compile(source);
+
+    console.log('it works here');
   },
 
   renderBoard: function() {
     $('#todoInput').val('');
+     console.log('it works here');
     $('#khanban').html(this.template(Model.getAllTasks()));
   }
 }
@@ -139,6 +145,7 @@ var Controller = {
       type: 'GET',
       url: 'http:/jacobfriedmann.com:3000/todos?num=1',
       success: function(data) {
+        
         data.tasks.forEach(function(task) {
           Model.addTask(task);
         });
@@ -146,6 +153,7 @@ var Controller = {
       }
     });
   }
+
 };
 
 function setup() {

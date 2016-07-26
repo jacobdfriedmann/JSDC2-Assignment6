@@ -7,21 +7,36 @@
 <body>
 	<div class="container">
 		<h1>Khanban</h1>
+
+<!--form-->
 		<form id="addTaskForm">
 		  <input id="todoInput" type="text">
-		  <input type="submit" value="Submit">
+
+	<!--submit button-->
+		  <input id="submit" type="submit" value="Submit">
 		</form>
+
+	<!--load button-->
 		<button id="load">Load</button>
 
-		<div id="khanban">
-		</div>
+			<!--khanban space -->
+
+			<div id="khanban">
+			</div>
+
 	</div>
+
+<!--close form-->
 
 	<script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="   crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
   <script id="board-template" type="text/x-handlebars-template">
+
     <div class="board">
+
+    <!--to do column-->
+
 			<div id="todo" class="column">
 				<h2>To Do</h2>
 				{{#each todos}}
@@ -31,6 +46,9 @@
 					</div>
 			  {{/each}}
 			</div>
+
+	<!--doing column-->
+
 			<div id="doing" class="column">
 				<h2>Doing</h2>
 				{{#each doings}}
@@ -40,6 +58,9 @@
 					</div>
 			  {{/each}}
 			</div>
+
+	<!--dont column-->
+
 			<div id="done" class="column">
 				<h2>Done</h2>
 				{{#each dones}}
