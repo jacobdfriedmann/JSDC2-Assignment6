@@ -11,7 +11,8 @@ var Model = {
       text: 'world',
       status: 'doing',
       id: '4321'
-    }
+//1. Added comma //
+    },
     {
       text: '!!',
       status: 'done',
@@ -32,7 +33,8 @@ var Model = {
   },
 
   getDones: function() {
-    return this.tasks.filter(function() {
+//2. Added task parameter//
+    return this.tasks.filter(function(task) {
       return task.status === 'done';
     });
   },
@@ -55,7 +57,8 @@ var Model = {
 
   deleteTask: function(id) {
     this.tasks = this.tasks.filter(function(task) {
-      return id === task.id;
+//5. modified expression so item set for deletion is only affected.
+      return id !== task.id;
     });
   },
 
@@ -94,20 +97,22 @@ var View = {
 var Controller = {
   init: function() {
     View.renderBoard();
-
     $('#addTaskForm').on('submit', this.handleSubmit);
     $('#load').on('click', this.handleLoad);
     $('#khanban').on('click', '.delete', this.handleDelete);
     $('#khanban').on('dragenter dragover', '.column', this.handleDrag);
     document.querySelector('#khanban').addEventListener('dragstart', this.handleDragStart);
-    document.querySelector('#kahnban').addEventListener('drop', this.handleDrop);
+    //3. Corrected spelling!//
+    document.querySelector('#khanban').addEventListener('drop', this.handleDrop);
   },
 
   handleSubmit: function(event) {
-    event.preventDefault;
     var value = $('#todoInput').val();
     Model.addTask(value);
     View.renderBoard();
+  //6. Moved prevent default to the bottom of the function//
+    event.preventDefault();
+
   },
 
   handleDelete: function() {
@@ -127,7 +132,8 @@ var Controller = {
 
   handleDrop: function(event) {
     var column = $(event.target).closest('.column');
-    if (column.length() > 0) {
+//4. length is not a function//
+    if (column.length > 0) {
       var id = event.dataTransfer.getData('text');
       Model.moveTask(id, column.attr('id'));
       View.renderBoard();
@@ -139,8 +145,10 @@ var Controller = {
       type: 'GET',
       url: 'http:/jacobfriedmann.com:3000/todos?num=1',
       success: function(data) {
-        data.tasks.forEach(function(task) {
-          Model.addTask(task);
+          //7. Data is an array, removed tasks//
+        data.forEach(function(task){
+          //8. Need to specify Array Key. Added Text.
+          Model.addTask(task.text);
         });
         View.renderBoard();
       }
