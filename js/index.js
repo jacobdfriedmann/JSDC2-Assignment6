@@ -3,17 +3,17 @@
 var Model = {
   tasks: [
     {
-      text: 'hello',
+      text: 'Drag me',
       status: 'todo',
       id: '1234'
     },
     {
-      text: 'world',
+      text: 'Drag me',
       status: 'doing',
       id: '4321'
-    }
+    },
     {
-      text: '!!',
+      text: 'Drag me',
       status: 'done',
       id: '9999'
     }
@@ -32,7 +32,7 @@ var Model = {
   },
 
   getDones: function() {
-    return this.tasks.filter(function() {
+    return this.tasks.filter(function(task) {
       return task.status === 'done';
     });
   },
@@ -55,7 +55,7 @@ var Model = {
 
   deleteTask: function(id) {
     this.tasks = this.tasks.filter(function(task) {
-      return id === task.id;
+      return id !== task.id;
     });
   },
 
@@ -100,11 +100,11 @@ var Controller = {
     $('#khanban').on('click', '.delete', this.handleDelete);
     $('#khanban').on('dragenter dragover', '.column', this.handleDrag);
     document.querySelector('#khanban').addEventListener('dragstart', this.handleDragStart);
-    document.querySelector('#kahnban').addEventListener('drop', this.handleDrop);
+    document.querySelector('#khanban').addEventListener('drop', this.handleDrop);
   },
 
   handleSubmit: function(event) {
-    event.preventDefault;
+    event.preventDefault();
     var value = $('#todoInput').val();
     Model.addTask(value);
     View.renderBoard();
@@ -127,7 +127,7 @@ var Controller = {
 
   handleDrop: function(event) {
     var column = $(event.target).closest('.column');
-    if (column.length() > 0) {
+    if (column.length > 0) {
       var id = event.dataTransfer.getData('text');
       Model.moveTask(id, column.attr('id'));
       View.renderBoard();
@@ -139,8 +139,9 @@ var Controller = {
       type: 'GET',
       url: 'http:/jacobfriedmann.com:3000/todos?num=1',
       success: function(data) {
-        data.tasks.forEach(function(task) {
-          Model.addTask(task);
+        data.forEach(function(task) {
+          delete task.completed;
+          Model.addTask(task.text);
         });
         View.renderBoard();
       }
