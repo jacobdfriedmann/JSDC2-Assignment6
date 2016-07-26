@@ -11,7 +11,7 @@ var Model = {
       text: 'world',
       status: 'doing',
       id: '4321'
-    }
+    },
     {
       text: '!!',
       status: 'done',
@@ -32,7 +32,7 @@ var Model = {
   },
 
   getDones: function() {
-    return this.tasks.filter(function() {
+    return this.tasks.filter(function(task) {
       return task.status === 'done';
     });
   },
@@ -42,12 +42,13 @@ var Model = {
       todos: this.getTodos(),
       doings: this.getDoings(),
       dones: this.getDones()
+
     };
   },
 
-  addTask: function(text) {
+  addTask: function(myText) {
     this.tasks.push({
-      text: text,
+      text: myText,
       status: 'todo',
       id: Date.now().toString().substr(-4)
     });
@@ -55,20 +56,21 @@ var Model = {
 
   deleteTask: function(id) {
     this.tasks = this.tasks.filter(function(task) {
-      return id === task.id;
+      return id !== task.id;
     });
   },
 
-  moveTask: function(id, status) {
+  moveTask: function(myId, status) {
     this.tasks = this.tasks.map(function(task) {
-      if (task.id === id) {
+      if (task.id === myId) {
         return {
           text: task.text,
           status: status,
-          id: id
+          id: myId
         };
-      }
+      } else {
       return task;
+      }
     })
   }
 };
@@ -100,11 +102,11 @@ var Controller = {
     $('#khanban').on('click', '.delete', this.handleDelete);
     $('#khanban').on('dragenter dragover', '.column', this.handleDrag);
     document.querySelector('#khanban').addEventListener('dragstart', this.handleDragStart);
-    document.querySelector('#kahnban').addEventListener('drop', this.handleDrop);
+    document.querySelector('#khanban').addEventListener('drop', this.handleDrop);
   },
 
   handleSubmit: function(event) {
-    event.preventDefault;
+    event.preventDefault();
     var value = $('#todoInput').val();
     Model.addTask(value);
     View.renderBoard();
@@ -126,8 +128,9 @@ var Controller = {
   },
 
   handleDrop: function(event) {
+    event.preventDefault();
     var column = $(event.target).closest('.column');
-    if (column.length() > 0) {
+    if (column.length > 0) {
       var id = event.dataTransfer.getData('text');
       Model.moveTask(id, column.attr('id'));
       View.renderBoard();
@@ -137,10 +140,10 @@ var Controller = {
   handleLoad: function() {
     $.ajax({
       type: 'GET',
-      url: 'http:/jacobfriedmann.com:3000/todos?num=1',
+      url: 'http://jacobfriedmann.com:3000/todos?num=1',
       success: function(data) {
-        data.tasks.forEach(function(task) {
-          Model.addTask(task);
+        data.forEach(function(task) {
+          Model.addTask(task.text);
         });
         View.renderBoard();
       }
