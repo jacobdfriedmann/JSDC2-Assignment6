@@ -11,7 +11,7 @@ var Model = {
       text: 'world',
       status: 'doing',
       id: '4321'
-    }
+    }, // bug 1
     {
       text: '!!',
       status: 'done',
@@ -32,7 +32,7 @@ var Model = {
   },
 
   getDones: function() {
-    return this.tasks.filter(function() {
+    return this.tasks.filter(function(task) { // bug 2
       return task.status === 'done';
     });
   },
@@ -54,8 +54,9 @@ var Model = {
   },
 
   deleteTask: function(id) {
+    console.log(this.tasks);
     this.tasks = this.tasks.filter(function(task) {
-      return id === task.id;
+      return id !== task.id; // bug 6
     });
   },
 
@@ -100,20 +101,21 @@ var Controller = {
     $('#khanban').on('click', '.delete', this.handleDelete);
     $('#khanban').on('dragenter dragover', '.column', this.handleDrag);
     document.querySelector('#khanban').addEventListener('dragstart', this.handleDragStart);
-    document.querySelector('#kahnban').addEventListener('drop', this.handleDrop);
+    document.querySelector('#khanban').addEventListener('drop', this.handleDrop); // bug 3
   },
 
   handleSubmit: function(event) {
-    event.preventDefault;
+    event.preventDefault(); // bug 5
     var value = $('#todoInput').val();
     Model.addTask(value);
     View.renderBoard();
   },
 
-  handleDelete: function() {
+  handleDelete: function(event) {
     var id = $(this).parent().attr('id');
     Model.deleteTask(id);
     View.renderBoard();
+    console.log('handleDelete working');
   },
 
   handleDragStart: function(event) {
@@ -127,7 +129,7 @@ var Controller = {
 
   handleDrop: function(event) {
     var column = $(event.target).closest('.column');
-    if (column.length() > 0) {
+    if (column.length /* bug 4 */ > 0) {
       var id = event.dataTransfer.getData('text');
       Model.moveTask(id, column.attr('id'));
       View.renderBoard();
@@ -139,8 +141,8 @@ var Controller = {
       type: 'GET',
       url: 'http:/jacobfriedmann.com:3000/todos?num=1',
       success: function(data) {
-        data.tasks.forEach(function(task) {
-          Model.addTask(task);
+        data.forEach/* bug 7 */(function(task) {
+          Model.addTask(task.text); //bug 8
         });
         View.renderBoard();
       }
