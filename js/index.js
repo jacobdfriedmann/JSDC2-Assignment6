@@ -11,7 +11,7 @@ var Model = {
       text: 'world',
       status: 'doing',
       id: '4321'
-    }
+    },
     {
       text: '!!',
       status: 'done',
